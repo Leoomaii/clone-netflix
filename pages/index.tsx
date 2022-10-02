@@ -7,14 +7,14 @@ import { Movie } from "../typings";
 import requests from "../utils/requests";
 
 interface Props {
-  netflixOriginals: Movie[];
-  trendingNow: Movie[];
-  topRated: Movie[];
-  actionMovies: Movie[];
-  comedyMovies: Movie[];
-  horrorMovies: Movie[];
-  romanceMovies: Movie[];
-  documentaries: Movie[];
+  netflixOriginals: Movie[]
+  trendingNow: Movie[]
+  topRated: Movie[]
+  actionMovies: Movie[]
+  comedyMovies: Movie[]
+  horrorMovies: Movie[]
+  romanceMovies: Movie[]
+  documentaries: Movie[]
   // products: Product[]
 }
 
@@ -28,9 +28,7 @@ const Home = ({
   topRated,
   trendingNow,
   // products,
-  
-}: 
-Props) => {
+}: Props) => {
   console.log(netflixOriginals);
   return (
     <div className="relative h-screen bg-gradient-to-b from-gray-900/10 to-[#010511] lg:h-[140vh]">
@@ -40,7 +38,7 @@ Props) => {
       </Head>
       <Header />
       <main>
-        <Banner />
+        <Banner netflixOriginals={netflixOriginals}/>
         <section>
           {/* row */}
           {/* row */}
@@ -74,7 +72,7 @@ export const getServerSideProps = async () => {
     fetch(requests.fetchHorrorMovies).then((res) => res.json()),
     fetch(requests.fetchRomanceMovies).then((res) => res.json()),
     fetch(requests.fetchDocumentaries).then((res) => res.json()),
-  ]);
+  ])
 
   return {
     props: {
