@@ -4,6 +4,7 @@ import Image from "next/image";
 import React from "react";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import useAuth from "../hooks/useAuth";
 
 interface Inputs {
   email: string;
@@ -13,7 +14,9 @@ interface Inputs {
 const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
 
 function Login() {
-  const {
+    const [login, setLogin] = useState(false);
+    const {signIn, signUp} = useAuth()
+    const {
     register,
     handleSubmit,
     formState: { errors },
@@ -21,13 +24,12 @@ function Login() {
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     if (login) {
-        // await signIn(email, password) 
+      await signIn(data.email, data.password)
     } else {
-        // await signUp{email, password}
+      await signUp(data.email, data.password)
     }
   }
 
-  const [login, setLogin] = useState(false);
   return (
     <div className="relative flex h-screen w-screen flex-col bg-black md:items-center md:justify-center md:bg-transparent">
       <Head>
