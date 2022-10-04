@@ -10,6 +10,7 @@ import Modal from "../components/Modal";
 import Plans from "../components/Plans";
 import Row from "../components/Row";
 import useAuth from "../hooks/useAuth";
+import useSubscription from "../hooks/useSubscription";
 import payments from "../lib/stripe";
 import { Movie } from "../typings";
 import requests from "../utils/requests";
@@ -39,8 +40,8 @@ const Home = ({
 }: 
 Props) => {
   const showModal = useRecoilValue(modalState);
-  const { loading } = useAuth();
-  const subscription = false
+  const { loading, user } = useAuth();
+  const subscription = useSubscription(user)
 
 
   if (loading || subscription === null) return null;
