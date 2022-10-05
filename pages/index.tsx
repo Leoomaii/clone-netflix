@@ -3,13 +3,14 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import { useRecoilValue } from "recoil";
-import { modalState } from "../atoms/modalAtoms";
+import { modalState, movieState } from "../atoms/modalAtoms";
 import Banner from "../components/Banner";
 import Header from "../components/Header";
 import Modal from "../components/Modal";
 import Plans from "../components/Plans";
 import Row from "../components/Row";
 import useAuth from "../hooks/useAuth";
+import useList from "../hooks/useList";
 import useSubscription from "../hooks/useSubscription";
 import payments from "../lib/stripe";
 import { Movie } from "../typings";
@@ -24,7 +25,7 @@ interface Props {
   horrorMovies: Movie[];
   romanceMovies: Movie[];
   documentaries: Movie[];
-  products: Product[]
+  products: Product[];
 }
 
 const Home = ({
@@ -37,16 +38,16 @@ const Home = ({
   topRated,
   trendingNow,
   products,
-}: 
-Props) => {
+}: Props) => {
   const showModal = useRecoilValue(modalState);
   const { loading, user } = useAuth();
-  const subscription = useSubscription(user)
-
+  const subscription = useSubscription(user);
+  const movie = useRecoilValue(movieState);
+  const list = useList(user?.uid);
 
   if (loading || subscription === null) return null;
 
-  if(!subscription) return <Plans products={products}/>
+  if (!subscription) return <Plans products={products} />;
 
   return (
     <div className="relative h-screen bg-gradient-to-b from-gray-900/10 to-[#010511] lg:h-[140vh]">
@@ -62,6 +63,7 @@ Props) => {
           <Row title="Top Rated" movies={topRated} />
           <Row title="Action Thrillers" movies={actionMovies} />
           {/* My List */}
+          {list.length > 0 && <Row title="My List" movies={list} />}
           <Row title="Comedies" movies={comedyMovies} />
           <Row title="Scary Movies" movies={horrorMovies} />
           <Row title="Romance Movies" movies={romanceMovies} />
@@ -81,7 +83,7 @@ export const getServerSideProps = async () => {
     activeOnly: true,
   })
     .then((res) => res)
-    .catch((error) => console.log(error.message))
+    .catch((error) => console.log(error.message));
 
   const [
     netflixOriginals,
@@ -101,7 +103,7 @@ export const getServerSideProps = async () => {
     fetch(requests.fetchHorrorMovies).then((res) => res.json()),
     fetch(requests.fetchRomanceMovies).then((res) => res.json()),
     fetch(requests.fetchDocumentaries).then((res) => res.json()),
-  ])
+  ]);
 
   return {
     props: {

@@ -1,25 +1,31 @@
-import React, { useEffect, useState } from "react";
-import { SearchIcon, BellIcon } from "@heroicons/react/solid";
-import Link from "next/link";
-export default function Header() {
-    const [isScrolled, setIsScrolled] = useState(false)
-    useEffect(() => {
-        const handleScroll = () => {
-            if (window.scrollY > 0 ) {
-                setIsScrolled(true)
-            } else {
-                setIsScrolled(false)
-            }
-        }
-        window.addEventListener("scroll", handleScroll)
+import Image from 'next/image'
+import { BellIcon, SearchIcon } from '@heroicons/react/solid'
+import useAuth from '../hooks/useAuth'
+import { useEffect, useState } from 'react'
+import Link from 'next/link'
+import BasicMenu from './BasicMenu'
 
-        return () => {
-            window.removeEventListener("scroll", handleScroll)
-        }
-    }, [])
+function Header() {
+  const [isScrolled, setIsScrolled] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 0) {
+        setIsScrolled(true)
+      } else {
+        setIsScrolled(false)
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll)
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
 
   return (
-    <header className={`${isScrolled && "bg-[#141414]"}`}>
+    <header className={`${isScrolled && 'bg-[#141414]'}`}>
       <div className="flex items-center space-x-2 md:space-x-10">
         <img
           src="https://rb.gy/ulxxee"
@@ -27,6 +33,8 @@ export default function Header() {
           height={100}
           className="cursor-pointer object-contain"
         />
+
+        <BasicMenu />
 
         <ul className="hidden space-x-4 md:flex">
           <li className="headerLink cursor-default font-semibold text-white hover:text-white">
@@ -51,5 +59,7 @@ export default function Header() {
         </Link>
       </div>
     </header>
-  );
+  )
 }
+
+export default Header
