@@ -3,6 +3,8 @@ import Image from "next/image";
 import React from "react";
 import { useRecoilState } from "recoil";
 import { modalState, movieState } from "../atoms/modalAtoms";
+import { Movie } from '../typings';
+
 
 interface Props {
   movie: Movie | DocumentData
