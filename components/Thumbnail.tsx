@@ -31,4 +31,6 @@ function Thumbnail({ movie }: Props) {
   )
 }
 
+export default Thumbnail
+
 
